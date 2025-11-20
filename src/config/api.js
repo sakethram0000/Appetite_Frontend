@@ -2,7 +2,7 @@ const API_CONFIG = {
   // API URL configuration
   BASE_URL: process.env.REACT_APP_API_BASE_URL || 
     (process.env.NODE_ENV === 'production' 
-      ? 'https://your-backend-url.com/api' 
+      ? 'https://backend-appetite.onrender.com/api' 
       : 'http://localhost:5131/api'),
   ENDPOINTS: {
     LOGIN: '/canvas/login',
