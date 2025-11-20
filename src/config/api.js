@@ -1,8 +1,9 @@
 const API_CONFIG = {
-  // For local development
-  BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:5131/api',
-  // For deployment - uncomment and update URLs below:
-  // BASE_URL: process.env.REACT_APP_API_BASE_URL || 'https://your-backend-url.com/api',
+  // API URL configuration
+  BASE_URL: process.env.REACT_APP_API_BASE_URL || 
+    (process.env.NODE_ENV === 'production' 
+      ? 'https://your-backend-url.com/api' 
+      : 'http://localhost:5131/api'),
   ENDPOINTS: {
     LOGIN: '/canvas/login',
     REGISTER: '/canvas/register',

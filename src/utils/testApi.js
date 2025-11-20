@@ -1,7 +1,16 @@
+// Get API base URL
+const getApiBaseUrl = () => {
+  return process.env.REACT_APP_API_BASE_URL || 
+    (process.env.NODE_ENV === 'production' 
+      ? 'https://your-backend-url.com' 
+      : 'http://localhost:5131');
+};
+
 // Test API connectivity
 export const testApiConnection = async () => {
   try {
-    const response = await fetch('http://localhost:5131/swagger/index.html');
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/swagger/index.html`);
     console.log('Backend reachable:', response.ok);
     return response.ok;
   } catch (error) {
@@ -13,7 +22,8 @@ export const testApiConnection = async () => {
 // Test login API
 export const testLogin = async (username = 'admin@appetitechecker.com', password = 'Admin123!') => {
   try {
-    const response = await fetch('http://localhost:5131/api/canvas/login', {
+    const baseUrl = getApiBaseUrl();
+    const response = await fetch(`${baseUrl}/api/canvas/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ Username: username, Password: password })

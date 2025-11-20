@@ -26,10 +26,11 @@ const AccountManagement = () => {
   const [modalType, setModalType] = useState('');
   const [reason, setReason] = useState('');
 
-  // For local development
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5131';
-  // For deployment - uncomment and update URLs below:
-  // const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://your-backend-url.com';
+  // API URL configuration
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 
+    (process.env.NODE_ENV === 'production' 
+      ? 'https://your-backend-url.com' 
+      : 'http://localhost:5131');
 
   useEffect(() => {
     loadData();
