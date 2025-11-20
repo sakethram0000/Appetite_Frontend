@@ -1,7 +1,7 @@
 // For local development
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5131';
+// const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5131';
 // For deployment - uncomment and update URLs below:
-// const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://your-backend-url.com';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://backend-appetite.onrender.com';
 
 class UserManagementService {
   async forgotPassword(email) {
