@@ -17,7 +17,7 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState(false);
   const [token, setToken] = useState('');
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://appetite-backend-lplx.onrender.com';
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://backend-appetite.onrender.com';
 
   useEffect(() => {
     const resetToken = searchParams.get('token');
