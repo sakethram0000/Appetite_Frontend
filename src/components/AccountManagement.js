@@ -45,23 +45,39 @@ const AccountManagement = () => {
         'Content-Type': 'application/json'
       };
 
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds
+
       if (activeTab === 'account-status') {
         // Load locked accounts
-        const lockedResponse = await fetch(`${API_BASE_URL}/api/usermanagement/locked-accounts`, { headers });
+        const lockedResponse = await fetch(`${API_BASE_URL}/api/usermanagement/locked-accounts`, { 
+          headers,
+          signal: controller.signal
+        });
         if (lockedResponse.ok) {
           const lockedData = await lockedResponse.json();
           setLockedAccounts(lockedData.lockedUsers || []);
         }
 
         // Load inactive users
-        const inactiveResponse = await fetch(`${API_BASE_URL}/api/usermanagement/inactive-users`, { headers });
+        const inactiveResponse = await fetch(`${API_BASE_URL}/api/usermanagement/inactive-users`, { 
+          headers,
+          signal: controller.signal
+        });
         if (inactiveResponse.ok) {
           const inactiveData = await inactiveResponse.json();
           setInactiveUsers(inactiveData.inactiveUsers || []);
         }
       }
+      
+      clearTimeout(timeoutId);
     } catch (error) {
-      console.error('Error loading data:', error);
+      if (error.name === 'AbortError') {
+        console.error('Request timed out after 60 seconds');
+      } else {
+        console.error('Error loading data:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -74,6 +90,10 @@ const AccountManagement = () => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       };
+
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds
 
       let endpoint = '';
       let body = { userId, reason };
@@ -98,8 +118,11 @@ const AccountManagement = () => {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers,
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (response.ok) {
         const result = await response.json();
@@ -112,8 +135,13 @@ const AccountManagement = () => {
         alert(error.message || 'Action failed');
       }
     } catch (error) {
-      console.error('Error performing action:', error);
-      alert('An error occurred while performing the action');
+      if (error.name === 'AbortError') {
+        console.error('Request timed out after 60 seconds');
+        alert('Request timed out. Please try again.');
+      } else {
+        console.error('Error performing action:', error);
+        alert('An error occurred while performing the action');
+      }
     }
   };
 
